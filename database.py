@@ -1,53 +1,42 @@
-from pydantic import BaseModel
-from typing import Union
-import json, os
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, Session
 
-class Usuario(BaseModel):
-    nome:  Union[str, None] = None
-    email: str
-    senha: str
+import models, schemas
 
-    def toJSON(self) -> dict[str, str]:
-        return {'nome': self.nome, 'email': self.email, 'senha': self.senha}
-    
-    def fromJSON(usuario:dict[str, str]) -> BaseModel:
-        return Usuario(**usuario)
-    
-class Noticia(BaseModel):
-    titulo: str
-    link: str
-    tema: str
-    tempo_publicacao: str
+engine = create_engine('postgresql+psycopg2://cloud:1234@localhost:5432/cloud')
+SessionLocal = sessionmaker(engine, autocommit=False, autoflush=False)
 
-    def toJSON(self) -> dict[str, str]:
-        return {'titulo': self.titulo, 'link': self.link, 'tema': self.tema, 'tempo_publicacao': self.tempo_publicacao}
-    
-    def fromJSON(noticia:dict[str, str]) -> BaseModel:
-        return Noticia(**noticia)
-    
+
 class Database():
-    def __init__(self, filename: str, object_type: BaseModel) -> None:
-        self.file = f'./{filename}.json'
-        if not os.path.exists(self.file):
-            with open(self.file, 'w') as file:
-                file.write('[]')
-        self.object = object_type
-    
-    def load(self) -> dict[str, str]:
-        with open(self.file, 'r', encoding='UTF-8') as file:
-            return json.loads(file.read())
+    session: Session
+    table: object
 
-    def add(self, new_object: any) -> None:
-        data = self.load()
-        data.append(new_object.toJSON())
-        with open(self.file, 'w', encoding='UTF-8') as file:
-            file.write(json.dumps(data, indent=4))
-    
-    def get_by(self, field:str, value:str) -> any:
-        return next((self.object.fromJSON(object_data) for object_data in self.load() if object_data[field] == value), None)
-    
-    def within(self, field:str, value:str) -> bool:
-        return next((True for object_data in self.load() if object_data[field] == value), False)
+    def __init__(self, session: Session) -> None:
+        self.session = session
+
+    def close(self) -> None:
+        self.session.close()
+
+    def get(self, table:object, id: int):
+        return self.session.query(table).filter(table.id == id).first()
+
+    def get_all(self, offset:int=0, limit:int=100):
+        return self.session.query(self.table).offset(offset).limit(limit).all()    
+
+    def create(self, new_object:schemas.BaseModel):
+        db_object = self.table(**new_object.model_dump())
+        self.session.add(db_object)
+        self.session.commit()
+        self.session.refresh(db_object)
+        return db_object
 
 
+class UsuarioTable(Database):
+    table = models.Usuario
+
+    def get_by_email(self, email:str):
+        return self.session.query(models.Usuario).filter(models.Usuario.email == email).first()
+    
+    def get_by_senha(self, senha:str):
+        return self.session.query(models.Usuario).filter(models.Usuario.senha == senha).first()
 

@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup, Tag
 
-from database import Noticia
+from schemas import Noticia
 
 def extract_noticia(noticia_tag:Tag) -> Noticia | None:
     try:
@@ -14,13 +14,16 @@ def extract_noticia(noticia_tag:Tag) -> Noticia | None:
     except Exception as e:
         return None
 
-def scraping_g1() -> list[dict[str, str]]:
-    page = requests.get('https://g1.globo.com/')
+def g1() -> list[dict[str, str]] | None:
+    try:
+        page = requests.get('https://g1.globo.com/')
+    except TimeoutError as e:
+        return None
     soup = BeautifulSoup(page.content, 'html.parser')
     feed_noticias = soup.select('div.feed-root')[0].select('div.feed-post-body')
 
-    return [extract_noticia(noticia) for noticia in feed_noticias]
+    return [noticia for noticia in [extract_noticia(noticia) for noticia in feed_noticias] if noticia is not None]
 
 
 if __name__ == '__main__':
-    print('\n\n'.join(f'{i}: {noticia}' for i, noticia in enumerate(scraping_g1())))
+    print('\n\n'.join(f'{i}: {noticia}' for i, noticia in enumerate(g1())))
