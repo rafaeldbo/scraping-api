@@ -22,7 +22,7 @@ def get_db():
 def registrar(usuario:schemas.Usuario, db:UsuarioTable=Depends(get_db)) -> dict[str, str]:
 
     if not db.get_by_email(usuario.email):
-        usuario.senha = jwt.encode({'email': usuario.email}, usuario.senha+KEY)
+        usuario.senha = jwt.encode({'email': usuario.email}, KEY, 'HS256')
         db.create(usuario)
         return {'jwt': usuario.senha}
     
@@ -36,7 +36,7 @@ def login(usuario:schemas.UsuarioLogin, db:UsuarioTable=Depends(get_db)) -> dict
         raise HTTPException(401, 'email not recognized')
     
     try:
-        if usuario.email != jwt.decode(db_usuario.senha, usuario.senha+KEY, 'HS256')['email']:
+        if usuario.email != jwt.decode(db_usuario.senha, KEY, 'HS256')['email']:
             raise HTTPException(401, 'incorrect password, something is wrong')
     except:
         raise HTTPException(401, 'incorrect password')
@@ -48,10 +48,16 @@ def consultar(Authorization:str|None=Header(default=None), db:UsuarioTable=Depen
     if Authorization is None or 'Bearer ' not in Authorization:
         raise HTTPException(403, 'authorization not provided')
     
-    if not db.get_by_senha(Authorization.split(' ')[1]):
+    token = Authorization.split(' ')[1]
+    if not db.get_by_senha(token):
         raise HTTPException(403, 'incorrect token')
-    
+    try:
+        jwt.decode(token, KEY, 'HS256')
+    except:
+        raise HTTPException(403, 'invalid token')
+
     scrap = scraper.g1()
     if scrap is None:
         raise HTTPException(408, 'the request exceeded the waiting time')
     return scrap
+

@@ -29,6 +29,15 @@ class Database():
         self.session.commit()
         self.session.refresh(db_object)
         return db_object
+    
+    def delete(self, id:int) -> None:
+        db_object = self.get(self.table, id)
+        self.session.delete(db_object)
+        self.session.commit()
+
+    def delete_all(self) -> None:
+        self.session.query(self.table).delete()
+        self.session.commit()
 
 
 class UsuarioTable(Database):
