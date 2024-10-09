@@ -1,14 +1,14 @@
 from fastapi import FastAPI, HTTPException, status, Header, Depends
 
 import jwt
+from hashlib import sha256
 
-from database import UsuarioTable, SessionLocal, engine
-import models, schemas, scraper
+from database import UsuarioTable, SessionLocal
+import schemas, scraper
+from config import KEY
 
-models.Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
-KEY = 'cloudj'
 
 # Dependency
 def get_db():
@@ -22,9 +22,10 @@ def get_db():
 def registrar(usuario:schemas.Usuario, db:UsuarioTable=Depends(get_db)) -> dict[str, str]:
 
     if not db.get_by_email(usuario.email):
-        usuario.senha = jwt.encode({'email': usuario.email}, KEY, 'HS256')
+        usuario.senha = sha256(usuario.senha.encode()).hexdigest()
+        print(usuario.senha)
         db.create(usuario)
-        return {'jwt': usuario.senha}
+        return {'jwt': jwt.encode({'email': usuario.email}, KEY, 'HS256')}
     
     raise HTTPException(409, 'user already exists')
 
@@ -35,24 +36,19 @@ def login(usuario:schemas.UsuarioLogin, db:UsuarioTable=Depends(get_db)) -> dict
     if db_usuario is None:
         raise HTTPException(401, 'email not recognized')
     
-    try:
-        if usuario.email != jwt.decode(db_usuario.senha, KEY, 'HS256')['email']:
-            raise HTTPException(401, 'incorrect password, something is wrong')
-    except:
+    if db_usuario.senha != sha256(usuario.senha.encode()).hexdigest():
         raise HTTPException(401, 'incorrect password')
-    
-    return {'jwt': db_usuario.senha}
+
+    return {'jwt': jwt.encode({'email': usuario.email}, KEY, 'HS256')}
 
 @app.get('/consultar', response_model=list[schemas.Noticia])
-def consultar(Authorization:str|None=Header(default=None), db:UsuarioTable=Depends(get_db)) -> list[schemas.Noticia]:
+def consultar(Authorization:str|None=Header(default=None)) -> list[schemas.Noticia]:
+    print(Authorization)
     if Authorization is None or 'Bearer ' not in Authorization:
         raise HTTPException(403, 'authorization not provided')
     
-    token = Authorization.split(' ')[1]
-    if not db.get_by_senha(token):
-        raise HTTPException(403, 'incorrect token')
     try:
-        jwt.decode(token, KEY, 'HS256')
+        jwt.decode(Authorization.split(' ')[1], KEY, 'HS256')
     except:
         raise HTTPException(403, 'invalid token')
 
@@ -60,4 +56,3 @@ def consultar(Authorization:str|None=Header(default=None), db:UsuarioTable=Depen
     if scrap is None:
         raise HTTPException(408, 'the request exceeded the waiting time')
     return scrap
-

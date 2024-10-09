@@ -1,9 +1,9 @@
-from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
 import models, schemas
+from config import Base, engine
 
-engine = create_engine('postgresql+psycopg2://cloud:1234@localhost:5432/cloud')
+
 SessionLocal = sessionmaker(engine, autocommit=False, autoflush=False)
 
 
@@ -43,9 +43,9 @@ class Database():
 class UsuarioTable(Database):
     table = models.Usuario
 
-    def get_by_email(self, email:str):
+    def get_by_email(self, email:str) -> models.Usuario | None:
         return self.session.query(models.Usuario).filter(models.Usuario.email == email).first()
     
-    def get_by_senha(self, senha:str):
+    def get_by_senha(self, senha:str) -> models.Usuario | None:
         return self.session.query(models.Usuario).filter(models.Usuario.senha == senha).first()
 
