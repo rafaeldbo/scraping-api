@@ -3,56 +3,52 @@ from fastapi import FastAPI, HTTPException, status, Header, Depends
 import jwt
 from hashlib import sha256
 
-from database import UsuarioTable, SessionLocal
-import schemas, scraper
-from config import KEY
-
+from config import KEY, Database, create_database, get_database
+from models import User, UserLogin, Token, News
+from scraper import g1
 
 app = FastAPI()
 
-# Dependency
-def get_db():
-    db = UsuarioTable(SessionLocal())
-    try:
-        yield db
-    finally:
-        db.close()
 
-@app.post('/registrar', status_code=status.HTTP_201_CREATED, response_model=schemas.Token)
-def registrar(usuario:schemas.Usuario, db:UsuarioTable=Depends(get_db)) -> dict[str, str]:
+@app.on_event('startup')
+def on_startup() -> None:
+    create_database()
 
-    if not db.get_by_email(usuario.email):
+
+@app.post('/registrar', status_code=status.HTTP_201_CREATED, response_model=Token)
+def registrar(usuario: User, db: Database=Depends(get_database)) -> Token:
+
+    if not db.get_where(User, User.email == usuario.email):
         usuario.senha = sha256(usuario.senha.encode()).hexdigest()
-        print(usuario.senha)
         db.create(usuario)
         return {'jwt': jwt.encode({'email': usuario.email}, KEY, 'HS256')}
     
     raise HTTPException(409, 'user already exists')
 
-@app.post('/login', response_model=schemas.Token)
-def login(usuario:schemas.UsuarioLogin, db:UsuarioTable=Depends(get_db)) -> dict[str, str]:
-    db_usuario = db.get_by_email(usuario.email)
-
-    if db_usuario is None:
-        raise HTTPException(401, 'email not recognized')
+@app.post('/login', response_model=Token)
+def login(usuario: UserLogin, db: Database=Depends(get_database)) -> Token:
     
-    if db_usuario.senha != sha256(usuario.senha.encode()).hexdigest():
+    hash_password = sha256(usuario.senha.encode()).hexdigest()
+    usuario = db.get_where(User, User.email == usuario.email, first=True)
+
+    if usuario is None:
+        raise HTTPException(401, 'email not recognized')
+    if usuario.senha != hash_password:
         raise HTTPException(401, 'incorrect password')
 
     return {'jwt': jwt.encode({'email': usuario.email}, KEY, 'HS256')}
 
-@app.get('/consultar', response_model=list[schemas.Noticia])
-def consultar(Authorization:str|None=Header(default=None)) -> list[schemas.Noticia]:
-    print(Authorization)
+@app.get('/consultar', response_model=list[News])
+def consultar(Authorization: str | None=Header(default=None)) -> list[News]:
+    
     if Authorization is None or 'Bearer ' not in Authorization:
         raise HTTPException(403, 'authorization not provided')
-    
     try:
         jwt.decode(Authorization.split(' ')[1], KEY, 'HS256')
     except:
         raise HTTPException(403, 'invalid token')
 
-    scrap = scraper.g1()
+    scrap = g1()
     if scrap is None:
         raise HTTPException(408, 'the request exceeded the waiting time')
     return scrap

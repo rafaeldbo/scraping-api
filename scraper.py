@@ -1,15 +1,15 @@
 import requests
 from bs4 import BeautifulSoup, Tag
 
-from schemas import Noticia
+from models import News
 
-def extract_noticia(noticia_tag:Tag) -> Noticia | None:
+def extract_noticia(news_tag:Tag) -> News | None:
     try:
-        return Noticia(
-            titulo = noticia_tag.select('a.feed-post-link')[0].findChildren('p')[0].text.strip(),
-            link = noticia_tag.select('a.feed-post-link')[0].get('href'),
-            tema = noticia_tag.select('span.feed-post-metadata-section')[0].text.strip(),
-            tempo_publicacao = noticia_tag.select('span.feed-post-datetime')[0].text.strip()
+        return News(
+            titulo = news_tag.select('a.feed-post-link')[0].findChildren('p')[0].text.strip(),
+            link = news_tag.select('a.feed-post-link')[0].get('href'),
+            tema = news_tag.select('span.feed-post-metadata-section')[0].text.strip(),
+            tempo_publicacao = news_tag.select('span.feed-post-datetime')[0].text.strip()
         )
     except Exception as e:
         return None
@@ -22,8 +22,8 @@ def g1() -> list[dict[str, str]] | None:
     soup = BeautifulSoup(page.content, 'html.parser')
     feed_noticias = soup.select('div.feed-root')[0].select('div.feed-post-body')
 
-    return [noticia for noticia in [extract_noticia(noticia) for noticia in feed_noticias] if noticia is not None]
+    return [news for news in [extract_noticia(news) for news in feed_noticias] if news is not None]
 
 
 if __name__ == '__main__':
-    print('\n\n'.join(f'{i}: {noticia}' for i, noticia in enumerate(g1())))
+    print('\n\n'.join(f'{i}: {news}' for i, news in enumerate(g1())))
