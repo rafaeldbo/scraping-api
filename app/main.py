@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException, status, Header, Depends
 
 import jwt
 from hashlib import sha256
+from pydantic import validate_email
 
 from config import KEY, Database, create_database, get_database
 from models import User, UserLogin, Token, News
@@ -17,6 +18,11 @@ def on_startup() -> None:
 
 @app.post('/registrar', status_code=status.HTTP_201_CREATED, response_model=Token)
 def registrar(usuario: User, db: Database=Depends(get_database)) -> Token:
+    
+    try:
+        validate_email(usuario.email)
+    except:
+        raise HTTPException(401, 'Invalid email format')
 
     if not db.get_where(User, User.email == usuario.email):
         usuario.senha = sha256(usuario.senha.encode()).hexdigest()
@@ -27,6 +33,11 @@ def registrar(usuario: User, db: Database=Depends(get_database)) -> Token:
 
 @app.post('/login', response_model=Token)
 def login(usuario: UserLogin, db: Database=Depends(get_database)) -> Token:
+    
+    try:
+        validate_email(usuario.email)
+    except:
+        raise HTTPException(401, 'Invalid email format')
     
     hash_password = sha256(usuario.senha.encode()).hexdigest()
     usuario = db.get_where(User, User.email == usuario.email, first=True)

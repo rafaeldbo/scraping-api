@@ -3,15 +3,15 @@ from sqlmodel import Field, SQLModel
 
 class User(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
-    name: str = Field(max_length=50)
+    nome: str = Field(max_length=50)
     email: str = Field(unique=True)
     senha: str = Field(min_length=6)
-
+    
     model_config = {
         "json_schema_extra": {
             "examples": [
                 {
-                    "name": "Humberto Sandmann",
+                    "nome": "Humberto Sandmann",
                     "email": "humbertors@insper.edu.br",
                     "senha": "R4u1_Ik3d4"
                 }
@@ -20,8 +20,8 @@ class User(SQLModel, table=True):
     }
     
 class UserLogin(SQLModel):
-    email: str
-    senha: str
+    email: str = Field(unique=True)
+    senha: str = Field(min_length=6)
      
     model_config = {
         "json_schema_extra": {

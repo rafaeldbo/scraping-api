@@ -3,29 +3,25 @@ name: cloud-scraping-api
 services:
 
   web:
-    build: .
+    image: rafaeldbo/scraping-api
     ports:
-      - 8000:8000
+      - ${API_PORT}:8080
     depends_on:
       - db
-    volumes:
-      - ./:/code:ro
     environment:
-      - "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${PORT}/${POSTGRES_DB}"
+      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}"
     env_file:
       - .env 
 
   db:
     image: postgres
-    ports: 
-      - ${PORT}:${PORT}
     expose:
-      - ${PORT}
-    env_file:
-      - .env 
+      - ${DB_PORT}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    command: -p ${PORT}
+    command: -p ${DB_PORT}
+    env_file:
+      - .env 
 
 volumes:
       postgres_data: 

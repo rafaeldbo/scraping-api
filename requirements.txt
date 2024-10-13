@@ -1,7 +1,7 @@
-fastapi[standard]
-requests
-PyJWT
-SQLmodel
-beautifulsoup4
-python-dotenv
-psycopg2
+markdown-grid-tables
+markdown-exec
+mkdocs-material
+mkdocs-material-extensions
+mkdocs-glightbox
+mkdocs-git-revision-date-localized-plugin
+termynal
