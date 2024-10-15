@@ -5,23 +5,25 @@ services:
   web:
     image: rafaeldbo/scraping-api
     ports:
-      - ${API_PORT}:8080
+      - 8080:8080
     depends_on:
       - db
     environment:
-      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:${DB_PORT}/${POSTGRES_DB}"
-    env_file:
-      - .env 
+      POSTGRES_USER: "cloud"
+      POSTGRES_PASSWORD: "cloudpassword"
+      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5430/cloud"
+      SECRET_KEY: "cloudkey" # chave da criptografia JWT
 
   db:
     image: postgres
     expose:
-      - ${DB_PORT}
+      - "5430"
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    command: -p ${DB_PORT}
-    env_file:
-      - .env 
+    command: "-p 5430"
+    environment:
+      POSTGRES_USER: "cloud"
+      POSTGRES_PASSWORD: "cloudpassword"
 
 volumes:
       postgres_data: 
