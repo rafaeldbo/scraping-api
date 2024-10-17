@@ -1,29 +1,30 @@
-name: cloud-scraping-api
+name: scraping-api
 
 services:
 
   web:
     image: rafaeldbo/scraping-api
     ports:
-      - 8080:8080
+      - ${WEB_PORT:-8080}:8080
     depends_on:
       - db
     environment:
-      POSTGRES_USER: "cloud"
-      POSTGRES_PASSWORD: "cloudpassword"
-      DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5430/cloud"
-      SECRET_KEY: "cloudkey" # chave da criptografia JWT
+      DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-cloud}:${POSTGRES_PASSWORD:-cloudpassword}@db:${DB_PORT:-5430}/${DB_NAME:-cloud}
+      SECRET_KEY: cloudkey
 
   db:
     image: postgres
+    ports:
+      - ${DB_PORT:-5430}:${DB_PORT:-5430}
     expose:
-      - "5430"
+      - ${DB_PORT:-5430}
     volumes:
       - postgres_data:/var/lib/postgresql/data/
-    command: "-p 5430"
+    command: 
+      -p ${DB_PORT:-5430}
     environment:
-      POSTGRES_USER: "cloud"
-      POSTGRES_PASSWORD: "cloudpassword"
+      POSTGRES_USER: cloud
+      POSTGRES_PASSWORD: cloudpassword
 
 volumes:
       postgres_data: 
