@@ -1,6 +1,6 @@
 site_name: Scraping-API
 site_author: Dourado, R.
-site_url: https://rafaeldbo.com.br/cloud/install
+site_url: https://rafaeldbo.com.br/cloud/
 theme:
   name: material
   palette:

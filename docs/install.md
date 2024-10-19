@@ -2,41 +2,35 @@
 ---
 ## **Pré-Requisitos**
 
-Para a instalação da aplicação é necessário apenas a intalação do [Docker](https://docs.docker.com/engine/install/). Mas, também é recomendado a instalação do [Git](https://git-scm.com/downloads) para facilitar o download dos arquivos necessários para a instalação.
-
-Caso não queira instalar o `Git` você pode apenas criar um arquivo `compose.yaml` com as informações abaixo:
+Para a instalação da aplicação é necessário a intalação do [Docker](https://docs.docker.com/engine/install/). Também é necessário possuir um arquivo `compose.yaml` com as informações abaixo. Caso queira, você pode baixa-lo por esse [link](https://alinsperedu-my.sharepoint.com/:u:/g/personal/rafaeldbo_al_insper_edu_br/EZfWwkgEXfFMkuFo3k7owHkB7EJIMdCWln_UM4_A1WthVQ?e=glbhfu):
 ???- note "Arquivo Compose"
     ``` yaml title="compose.yaml"
-        name: scraping-api
+    name: scraping-api
 
-        services:
+    services:
 
-        web:
-            image: rafaeldbo/scraping-api
-            ports:
+    web:
+        image: rafaeldbo/scraping-api:latest
+        ports:
             - ${WEB_PORT:-8080}:8080
-            depends_on:
+        depends_on:
             - db
-            environment:
+        environment:
             DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-cloud}:${POSTGRES_PASSWORD:-cloudpassword}@db:${DB_PORT:-5430}/${DB_NAME:-cloud}
             SECRET_KEY: cloudkey
 
-        db:
-            image: postgres
-            ports:
-            - ${DB_PORT:-5430}:${DB_PORT:-5430}
-            expose:
-            - ${DB_PORT:-5430}
-            volumes:
+    db:
+        image: postgres:latest
+        volumes:
             - postgres_data:/var/lib/postgresql/data/
-            command: 
-            -p ${DB_PORT:-5430}
-            environment:
+        command: 
+            - -p ${DB_PORT:-5430}
+        environment:
             POSTGRES_USER: cloud
             POSTGRES_PASSWORD: cloudpassword
 
-        volumes:
-            postgres_data:  
+    volumes:
+        postgres_data:   
     ```
 
 ## **Instalação Rápida**
@@ -44,22 +38,12 @@ Caso não queira instalar o `Git` você pode apenas criar um arquivo `compose.ya
 Com os pré-requisitos atendidos siga os passos abaixo:
 
 !!! info "Intalação"
-    No terminal, execute:
+    No terminal, no mesmo diretório em que está o arquivo `compose.yaml`, execute:
+    ``` shell title="compose"
+    docker compose up -d
+    ```
 
-    === "Com Git"
-        ``` bash
-        git clone https://github.com/rafaeldbo/scraping-api
-        cd ./scraping-api
-        docker compose up -d
-        ```
-
-    === "Sem Git"
-        No mesmo diretório em que o arquivo `compose.yaml` que você criou está presente. 
-        ``` shell
-        docker compose up -d
-        ```
-
-???+ info "Customizando"
+!!! info "Customizando"
     É possível customizar o banco de dados, as portas de acesso, assim como a assinatura dos token JWT, por meio da criação de um arquivo `.env` como o abaixo:
     ``` yaml title=".env"
     POSTGRES_USER = "cloud"               # Usuário do Banco de dados
@@ -69,4 +53,26 @@ Com os pré-requisitos atendidos siga os passos abaixo:
     WEB_PORT = 8080                       # Porta de conexão da API
     SECRET_KEY = "cloudkey"               # Assinatura dos token JWT
     ```
-    **OBS.:** no repositório do Github há um arquivo `.env.example` que também pode ser usado como inspiração para essa customização.
+    Também é possível alterar o funcionamento da API criando sua própria versão do codígo fonte. Para isso, será necessário possui o [Git](https://git-scm.com/downloads) para acessar o repositório da API.
+    Com o Git instalado, além do Docker é claro, execute:
+    ``` shell title="Código Fonte"
+    git clone https://github.com/rafaeldbo/scraping-api
+    ```
+    O repositório possui os seguintes arquivos.
+    ``` tree title="Estutura do Repositório"
+    app
+        dockerfile @ arquivo de build da imagem da API
+        main.py # arquivo principal da API
+        requirements.txt 
+        ...
+    docs # arquivos da documentação em mkdocs
+        ...
+    compose.yaml # arquivo compose que utiliza a imagem padrão da API
+    compose.build.yaml # arquivo compose para modificações da API
+    .env.example # exemplo de .env para a API
+    ...
+    ```
+    Após realizar as edições desejadas no código fonte da API. Para subir a aplicação, dentro da pasta do repositório, execute:
+    ``` shell title="build & compose"
+    docker compose -f compose.build.yaml up -d --build
+    ```

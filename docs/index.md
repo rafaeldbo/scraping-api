@@ -9,6 +9,13 @@
 ---
 Essa é uma API criada para o projeto da disciplina de `Computação em Núvem` do 6º Semestre (2024.2) do curso de Engenharia da Computação do Insper. [[Enunciado do Projeto]](https://hsandmann.github.io/insper.cloud.projeto/)
 
+---       
+### **Recursos Implementados**
+
+A API permite a autenticação de usuários por meio de login e validação de assinaturas JWT e a obtenção de informações de notícias presentes na [Home Page do G1](https://g1.globo.com/) 
+
+[**Vídeo da API**]()
+
 ---
 ### **Tecnologias Usadas**
 
@@ -18,10 +25,6 @@ Essa é uma API criada para o projeto da disciplina de `Computação em Núvem` 
     - PyJWT [ Assinatura JWT ]
     - SQLmodel + Psycopg2 [ Integração com Banco de dados ]
 - PostegreSQL
-        
-### **Recursos Implementados**
-
-A API permite a autenticação de usuários por meio de login e validação de assinaturas JWT e a obtenção de informações de notícias presentes na [Home Page do G1](https://g1.globo.com/) 
 
 ---
 ### **Aluno/Desenvolvedor**
