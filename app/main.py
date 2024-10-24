@@ -1,4 +1,5 @@
-from fastapi import FastAPI, HTTPException, status, Header, Depends
+from fastapi import FastAPI, HTTPException, status, Depends, Security
+from fastapi.security.api_key import APIKeyHeader
 
 import jwt
 from hashlib import sha256
@@ -9,7 +10,6 @@ from models import User, UserLogin, Token, News
 from scraper import g1
 
 app = FastAPI()
-
 
 @app.on_event('startup')
 def on_startup() -> None:
@@ -50,8 +50,7 @@ def login(usuario: UserLogin, db: Database=Depends(get_database)) -> Token:
     return {'jwt': jwt.encode({'email': usuario.email}, KEY, 'HS256')}
 
 @app.get('/consultar', response_model=list[News])
-def consultar(Authorization: str | None=Header(default=None)) -> list[News]:
-    
+def consultar(Authorization: str=Security(APIKeyHeader(name="Authorization"))) -> list[News]:
     if Authorization is None or 'Bearer ' not in Authorization:
         raise HTTPException(403, 'authorization not provided')
     try:
