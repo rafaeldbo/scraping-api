@@ -467,11 +467,11 @@
 
   <h1>Utilização</h1>
 
-<details class="- tip">
+<details class="tip" open="open">
 <summary>Início Rápido</summary>
 <p>A API possui uma documentação gerada automaticamente usando o modelo <a href="https://www.openapis.org/">OpenAPI</a>, nele é possível vizualiar de forma estruturada os <code>endpoints</code>, ver exemplos de <code>response</code>, e testa-los com exemplos pré-definidos.</p>
 <p><a href="http://localhost:8080/docs">http://localhost:8080/docs</a></p>
-<p>O link acima só ira funcionar caso você tenha utilizado a porta padrão da API</p>
+<p>O link acima só ira funcionar caso você tenha utilizado a porta padrão da API (<code>8080</code>).</p>
 </details>
 <hr />
 <h2 id="registar"><strong>Registar</strong></h2>
@@ -502,6 +502,16 @@
 </ul>
 </details>
 <p>Além de criar o usuário, será retornado um <strong>token JWT</strong> que deverá ser usado para autenticar suas consultas ao serviço.</p>
+<details class="- example">
+<summary>Resultado</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="1:1"><input checked="checked" id="__tabbed_1_1" name="__tabbed_1" type="radio" /><div class="tabbed-labels"><label for="__tabbed_1_1">Postman</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><a class="glightbox" href="../img/registrar.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Testando Endpoit &quot;/registrar&quot;" src="../img/registrar.png" /></a></p>
+</div>
+</div>
+</div>
+</details>
 <hr />
 <h2 id="login"><strong>Login</strong></h2>
 <p>Utilize esse endpoint se autenticar como usuário do serviço e receber de volta seu <strong>token JWT</strong>.</p>
@@ -528,6 +538,16 @@
 <li><strong>senha</strong> A senha de pelo menos 6 caracteres correspondente ao e-mail;</li>
 </ul>
 </div>
+<details class="- example">
+<summary>Resultado</summary>
+<div class="tabbed-set tabbed-alternate" data-tabs="2:1"><input checked="checked" id="__tabbed_2_1" name="__tabbed_2" type="radio" /><div class="tabbed-labels"><label for="__tabbed_2_1">Postman</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><a class="glightbox" href="../img/login.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Testando Endpoit &quot;/login&quot;" src="../img/login.png" /></a></p>
+</div>
+</div>
+</div>
+</details>
 <hr />
 <h2 id="consultar"><strong>Consultar</strong></h2>
 <p>A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do <strong>G1</strong>. De cada notícia, há as informações: título, link para a notícia, tema e a quanto tempo a publicação ocorreu.</p>
@@ -566,6 +586,16 @@
 </span><span id="__span-7-25"><a id="__codelineno-7-25" name="__codelineno-7-25" href="#__codelineno-7-25"></a><span class="w">    </span><span class="p">}</span>
 </span><span id="__span-7-26"><a id="__codelineno-7-26" name="__codelineno-7-26" href="#__codelineno-7-26"></a><span class="p">]</span>
 </span></code></pre></div></p>
+<details class="- example">
+<summary>Resultado</summary>
+</details>
+<div class="tabbed-set tabbed-alternate" data-tabs="3:1"><input checked="checked" id="__tabbed_3_1" name="__tabbed_3" type="radio" /><div class="tabbed-labels"><label for="__tabbed_3_1">Postman</label></div>
+<div class="tabbed-content">
+<div class="tabbed-block">
+<p><a class="glightbox" href="../img/consultar.png" data-type="image" data-width="auto" data-height="auto" data-desc-position="bottom"><img alt="Testando Endpoit &quot;/consultar&quot;" src="../img/consultar.png" /></a></p>
+</div>
+</div>
+</div>
 </div>
 
 
