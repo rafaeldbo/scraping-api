@@ -1,11 +1,11 @@
 
 
-???- tip "Início Rápido"
+???+ tip "Início Rápido"
     A API possui uma documentação gerada automaticamente usando o modelo [OpenAPI](https://www.openapis.org/), nele é possível vizualiar de forma estruturada os `endpoints`, ver exemplos de `response`, e testa-los com exemplos pré-definidos.
 
     [http://localhost:8080/docs](http://localhost:8080/docs)
 
-    O link acima só ira funcionar caso você tenha utilizado a porta padrão da API
+    O link acima só ira funcionar caso você tenha utilizado a porta padrão da API (`8080`).
 
 ---
 ## **Registar**
@@ -43,6 +43,10 @@ Utilize esse endpoint para registrar um novo usuário do serviço.
 
 Além de criar o usuário, será retornado um **token JWT** que deverá ser usado para autenticar suas consultas ao serviço.
 
+???- example "Resultado"
+    === "Postman"
+        ![Testando Endpoit "/registrar"](./img/registrar.png)
+
 ---
 ## **Login**
 
@@ -69,11 +73,14 @@ Utilize esse endpoint se autenticar como usuário do serviço e receber de volta
     }
     ```
 
-
 !!! info "Campos"
 
     - **email**: Um e-mail válido de um usuário já registrado no serviço;
     - **senha** A senha de pelo menos 6 caracteres correspondente ao e-mail;
+
+???- example "Resultado"
+    === "Postman"
+        ![Testando Endpoit "/login"](./img/login.png)
 
 ---
 ## **Consultar**
@@ -118,3 +125,6 @@ A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do **G1**. 
         }
     ]
     ```
+    ???- example "Resultado"
+    === "Postman"
+        ![Testando Endpoit "/consultar"](./img/consultar.png)

@@ -43,6 +43,8 @@ Com os pré-requisitos atendidos siga os passos abaixo:
     docker compose up -d
     ```
 
+## **Customizando**
+
 !!! info "Customizando"
     É possível customizar o banco de dados, as portas de acesso, assim como a assinatura dos token JWT, por meio da criação de um arquivo `.env` como o abaixo:
     ``` yaml title=".env"
