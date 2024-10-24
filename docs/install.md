@@ -17,7 +17,7 @@ Para a instalação da aplicação é necessário a intalação do [Docker](http
             - db
         environment:
             DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-cloud}:${POSTGRES_PASSWORD:-cloudpassword}@db:${DB_PORT:-5430}/${DB_NAME:-cloud}
-            SECRET_KEY: cloudkey
+            SECRET_KEY: ${SECRET_KEY:-cloudkey}
 
     db:
         image: postgres:latest
@@ -26,11 +26,11 @@ Para a instalação da aplicação é necessário a intalação do [Docker](http
         command: 
             - -p ${DB_PORT:-5430}
         environment:
-            POSTGRES_USER: cloud
-            POSTGRES_PASSWORD: cloudpassword
+            POSTGRES_USER: ${POSTGRES_USER:-cloud}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cloudpassword}
 
     volumes:
-        postgres_data:   
+        postgres_data: 
     ```
 
 ## **Instalação Rápida**
@@ -53,7 +53,7 @@ Com os pré-requisitos atendidos siga os passos abaixo:
     WEB_PORT = 8080                       # Porta de conexão da API
     SECRET_KEY = "cloudkey"               # Assinatura dos token JWT
     ```
-    Também é possível alterar o funcionamento da API criando sua própria versão do codígo fonte. Para isso, será necessário possui o [Git](https://git-scm.com/downloads) para acessar o repositório da API.
+    Também é possível alterar o funcionamento da API criando sua própria versão do codígo fonte. Para isso, será necessário possuir o [Git](https://git-scm.com/downloads) para acessar o repositório da API.
     Com o Git instalado, além do Docker é claro, execute:
     ``` shell title="Código Fonte"
     git clone https://github.com/rafaeldbo/scraping-api
