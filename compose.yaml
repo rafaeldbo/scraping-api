@@ -10,7 +10,7 @@ services:
       - db
     environment:
       DATABASE_URL: postgresql+psycopg2://${POSTGRES_USER:-cloud}:${POSTGRES_PASSWORD:-cloudpassword}@db:${DB_PORT:-5430}/${DB_NAME:-cloud}
-      SECRET_KEY: cloudkey
+      SECRET_KEY: ${SECRET_KEY:-cloudkey}
 
   db:
     image: postgres:latest
@@ -19,8 +19,8 @@ services:
     command: 
       - -p ${DB_PORT:-5430}
     environment:
-      POSTGRES_USER: cloud
-      POSTGRES_PASSWORD: cloudpassword
+      POSTGRES_USER: ${POSTGRES_USER:-cloud}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cloudpassword}
 
 volumes:
       postgres_data: 
