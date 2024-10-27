@@ -21,16 +21,11 @@ Para a instalação da aplicação é necessário a intalação do [Docker](http
 
     db:
         image: postgres:latest
-        volumes:
-            - postgres_data:/var/lib/postgresql/data/
         command: 
             - -p ${DB_PORT:-5430}
         environment:
             POSTGRES_USER: ${POSTGRES_USER:-cloud}
             POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cloudpassword}
-
-    volumes:
-        postgres_data: 
     ```
 
 ## **Instalação Rápida**
