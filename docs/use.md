@@ -126,5 +126,5 @@ A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do **G1**. 
     ]
     ```
     ???- example "Resultado"
-    === "Postman"
-        ![Testando Endpoit "/consultar"](./img/consultar.png)
+        === "Postman"
+            ![Testando Endpoit "/consultar"](./img/consultar.png)
