@@ -2,7 +2,7 @@
 ---
 # **Scraping-API**
 
-**Documentação:** [https://rafaeldbo.github.io/scraping-api/](https://rafaeldbo.github.io/scraping-api/)
+**Documentation:** [https://rafaeldbo.github.io/scraping-api/](https://rafaeldbo.github.io/scraping-api/)
 
 **Source Code:** [https://github.com/rafaeldbo/scraping-api](https://github.com/rafaeldbo/scraping-api)
 

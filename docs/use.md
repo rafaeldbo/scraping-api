@@ -85,7 +85,7 @@ Utilize esse endpoint se autenticar como usuário do serviço e receber de volta
 ---
 ## **Consultar**
 
-A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do **G1**. De cada notícia, há as informações: título, link para a notícia, tema e a quanto tempo a publicação ocorreu.
+A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do **G1**. De cada notícia, há as informações: título, link para a notícia, tema e a quanto tempo a publicação ocorreu. Para conseguir realizar a consulta é necessário utulizar o **Token JWT** obtido no registro ou login.
 
 !!! note "Consulta ao Serviço"
     
@@ -125,6 +125,6 @@ A cunsulta ao serviço retorna de 4 a 10 notícias presentes na capa do **G1**. 
         }
     ]
     ```
-    ???- example "Resultado"
-        === "Postman"
-            ![Testando Endpoit "/consultar"](./img/consultar.png)
+???- example "Resultado"
+    === "Postman"
+        ![Testando Endpoit "/consultar"](./img/consultar.png)
