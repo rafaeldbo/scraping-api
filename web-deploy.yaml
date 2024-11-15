@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: scraping-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: scraping-api
+      tier: backend
+  template:
+    metadata:
+      labels:
+        app: scraping-api
+        tier: backend
+    spec:
+      containers:
+        - name: web
+          image: rafaeldbo/scraping-api:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DATABASE_URL
+              value: "postgresql+psycopg2://cloud:cloudpassword@db:5432/cloud"
+            - name: SECRET_KEY
+              value: "cloudkey"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    app: scraping-api
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+  selector:
+    app: scraping-api
+    tier: backend

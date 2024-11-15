@@ -2,8 +2,9 @@
 ---
 ## **Pré-Requisitos**
 
-Para a instalação da aplicação é necessário a intalação do [Docker](https://docs.docker.com/engine/install/). Também é necessário possuir um arquivo `compose.yaml` com as informações abaixo. Caso queira, você pode baixa-lo por esse [link](https://alinsperedu-my.sharepoint.com/:u:/g/personal/rafaeldbo_al_insper_edu_br/EZfWwkgEXfFMkuFo3k7owHkB7EJIMdCWln_UM4_A1WthVQ?e=glbhfu):
-???- note "Arquivo Compose"
+Para a instalação da aplicação é necessário a intalação do [Docker](https://docs.docker.com/engine/install/). Também é necessário possuir um arquivo `compose.yaml` com as informações abaixo:
+???- note "compose.yaml"
+    Caso queira, você pode baixar o arquivo por meio desse link: [compose.yaml](https://alinsperedu-my.sharepoint.com/:u:/g/personal/rafaeldbo_al_insper_edu_br/EZfWwkgEXfFMkuFo3k7owHkB7EJIMdCWln_UM4_A1WthVQ?e=glbhfu)
     ``` yaml title="compose.yaml"
     name: scraping-api
 
