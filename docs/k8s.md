@@ -6,7 +6,7 @@ Nesse guia serão mostrados os passos necessários para realizar o deploy da API
 
 É possível acessar a API por meio do desse [link](http://a5f54ce5261df479cb6d1104d0a981a8-1418404177.us-east-1.elb.amazonaws.com/docs).
 
-[**Vídeo Explicativo**]()
+[**Vídeo Explicativo**](https://youtu.be/RyzTUtQFQHA)
 
 ## **Pré-Requisitos**
 
@@ -49,7 +49,7 @@ eksctl create cluster --name scraping-api --region us-east-1 --nodes 2 --node-ty
     - O `Node Group` do **EC2** em que as instâncias utilizadas pelo cluster serão alocadas;
 
 
-## Deploy dos Containers
+## **Deploy dos Containers**
 
 Com o cluster criado, é necessário fazer o deploy dos containers de cada parte da nossa aplicação (o banco de dados e a API), mas antes disso, precisamos mudar o contexto do **kubectl** para que ele acesse o cluster recém criado:
 

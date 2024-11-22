@@ -8,7 +8,7 @@
 
 **Docker Image:** [https://hub.docker.com/r/rafaeldbo/scraping-api](https://hub.docker.com/r/rafaeldbo/scraping-api)
 
-**API Acess** [http://scraping-api.us-east-1.elb.amazonaws.com/docs](http://a5f54ce5261df479cb6d1104d0a981a8-1418404177.us-east-1.elb.amazonaws.com/docs)
+**API Access** [http://scraping-api.us-east-1.elb.amazonaws.com/docs](http://a5f54ce5261df479cb6d1104d0a981a8-1418404177.us-east-1.elb.amazonaws.com/docs)
 
 ---
 Essa é uma API criada para o projeto da disciplina de `Computação em Nuvem` do 6º Semestre (2024.2) do curso de Engenharia da Computação do Insper. [[Enunciado do Projeto]](https://hsandmann.github.io/insper.cloud.projeto/)
