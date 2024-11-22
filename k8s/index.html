@@ -509,7 +509,7 @@
 <h2 id="introducao"><strong>Introdução</strong></h2>
 <p>Nesse guia serão mostrados os passos necessários para realizar o deploy da API em um cluster kubernets utilizando o <strong>AWS EKS</strong> (Amazon Elastic Kubernetes Service).</p>
 <p>É possível acessar a API por meio do desse <a href="http://a5f54ce5261df479cb6d1104d0a981a8-1418404177.us-east-1.elb.amazonaws.com/docs">link</a>.</p>
-<p><a href=""><strong>Vídeo Explicativo</strong></a></p>
+<p><a href="https://youtu.be/RyzTUtQFQHA"><strong>Vídeo Explicativo</strong></a></p>
 <h2 id="pre-requisitos"><strong>Pré-Requisitos</strong></h2>
 <p>Será necessesário acesso a uma conta AWS com permissão sufieciente para criar um cluster EKS (preferencialmente permissões de adminstrador). Além disso, será útil possui o <strong><a href="https://aws.amazon.com/pt/cli/">AWS CLI</a></strong> e o <strong><a href="https://eksctl.io/installation/">EKSCTL</a></strong> para ser possuível utilizar os comandos mostrados nesse guia direto no console de seu computador. Caso não queira instala-los, é possível executar os comando no <strong>AWS Cloud Shell</strong>, porém podem haver algumas diferenças não apontadas nesse guia.</p>
 <h2 id="construcao-do-cluster"><strong>Construção do Cluster</strong></h2>
@@ -546,7 +546,7 @@
 </li>
 </ul>
 </div>
-<h2 id="deploy-dos-containers">Deploy dos Containers</h2>
+<h2 id="deploy-dos-containers"><strong>Deploy dos Containers</strong></h2>
 <p>Com o cluster criado, é necessário fazer o deploy dos containers de cada parte da nossa aplicação (o banco de dados e a API), mas antes disso, precisamos mudar o contexto do <strong>kubectl</strong> para que ele acesse o cluster recém criado:</p>
 <div class="admonition note">
 <p class="admonition-title">Mudando o Contexto</p>
